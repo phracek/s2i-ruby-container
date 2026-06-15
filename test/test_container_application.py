@@ -1,8 +1,6 @@
-import os
 import pytest
 
 from container_ci_suite.container_lib import ContainerTestLib
-from container_ci_suite.utils import ContainerTestLibUtils
 from container_ci_suite.engines.podman_wrapper import PodmanCLIWrapper
 
 from conftest import VARS

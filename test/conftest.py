@@ -1,5 +1,3 @@
-import pytest
-
 import os
 
 import sys
@@ -74,6 +72,7 @@ VARS = Vars(
     PSQL_IMAGE_TAG=PSQL_IMAGE_TAG,
     DEPLOYED_PSQL_IMAGE=DEPLOYED_PSQL_IMAGE,
 )
+
 
 def fips_enabled():
     """
