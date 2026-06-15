@@ -1,6 +1,6 @@
 from container_ci_suite.helm import HelmChartsAPI
 
-from conftest import VARS, skip_ocp_test
+from conftest import VARS
 
 
 class TestHelmRailsRubyTemplate:
@@ -13,7 +13,6 @@ class TestHelmRailsRubyTemplate:
         """
         Setup the test environment.
         """
-        skip_ocp_test("helm")
         package_name = "redhat-ruby-rails-application"
         self.hc_api = HelmChartsAPI(
             path=VARS.TEST_DIR,
@@ -38,7 +37,6 @@ class TestHelmRailsRubyTemplate:
         Test if Helm imagestream and Helm ruby rails application
         work properly and respond as expected.
         """
-        skip_ocp_test(reason="helm")
         self.hc_api.package_name = "redhat-ruby-imagestreams"
         assert self.hc_api.helm_package()
         assert self.hc_api.helm_installation()

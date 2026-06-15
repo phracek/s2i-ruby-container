@@ -2,7 +2,7 @@ import pytest
 
 from container_ci_suite.openshift import OpenShiftAPI
 
-from conftest import VARS, skip_ocp_test
+from conftest import VARS
 
 
 class TestS2IRailsTemplates:
@@ -39,7 +39,6 @@ class TestS2IRailsTemplates:
         """
         Test if Ruby s2i local templates work properly
         """
-        skip_ocp_test(reason="imagestream")
         assert self.oc_api.upload_image(VARS.DEPLOYED_PSQL_IMAGE, VARS.PSQL_IMAGE_SHORT)
         service_name = f"ruby-{VARS.SHORT_VERSION}-testing"
         template_url = f"examples/{template_name}"
@@ -64,13 +63,16 @@ class TestS2IRailsTemplates:
                     "DATABASE_PASSWORD=testp",
                 ]
             )
+        print(f"Deploying template {template_url} with args {openshift_args}")
         assert self.oc_api.deploy_template_with_image(
             image_name=VARS.IMAGE_NAME,
             template=template_url,
             name_in_template="ruby",
             openshift_args=openshift_args,
         )
-        assert self.oc_api.is_template_deployed(name_in_template=service_name, timeout=480)
+        assert self.oc_api.is_template_deployed(
+            name_in_template=service_name, timeout=480
+        )
         assert self.oc_api.check_response_inside_cluster(
             name_in_template=service_name,
             expected_output="Welcome to your Rails application",
