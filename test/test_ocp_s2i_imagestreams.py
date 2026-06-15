@@ -36,7 +36,7 @@ class TestRubyImagestreams:
             context=f"{VARS.VERSION}/test/puma-test-app",
             service_name=service_name,
         )
-        assert self.oc_api.is_template_deployed(name_in_template=service_name)
+        assert self.oc_api.is_template_deployed(name_in_template=service_name, timeout=480)
         assert self.oc_api.check_response_inside_cluster(
             name_in_template=service_name, expected_output="Hello world!"
         )

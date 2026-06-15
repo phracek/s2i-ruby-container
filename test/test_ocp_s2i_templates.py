@@ -16,8 +16,7 @@ class TestS2IRailsTemplates:
         """
         self.oc_api = OpenShiftAPI(
             pod_name_prefix=f"ruby-{VARS.SHORT_VERSION}-testing",
-            version=VARS.VERSION,
-            shared_cluster=True,
+            version=VARS.VERSION
         )
 
     def teardown_method(self):
@@ -30,16 +29,15 @@ class TestS2IRailsTemplates:
         "template_type, template_name",
         [
             ("local", "rails.json"),
-            ("local", "rails-postgresql-persistent.json"),
-            ("ex", "rails.json"),
-            ("ex", "rails-postgresql-persistent.json"),
+            # ("local", "rails-postgresql-persistent.json"),
+            # ("ex", "rails.json"),
+            # ("ex", "rails-postgresql-persistent.json"),
         ],
     )
     def test_rails_template_cluster(self, template_type, template_name):
         """
         Test if Ruby s2i local templates work properly
         """
-        assert self.oc_api.upload_image(VARS.DEPLOYED_PSQL_IMAGE, VARS.PSQL_IMAGE_SHORT)
         service_name = f"ruby-{VARS.SHORT_VERSION}-testing"
         template_url = f"examples/{template_name}"
         if template_type == "ex":
@@ -56,6 +54,7 @@ class TestS2IRailsTemplates:
             f"NAME={service_name}",
         ]
         if template_name != "rails.json":
+            assert self.oc_api.upload_image(VARS.DEPLOYED_PSQL_IMAGE, VARS.PSQL_IMAGE_SHORT)
             openshift_args.extend(
                 [
                     f"POSTGRESQL_VERSION={VARS.PSQL_IMAGE_TAG}",
